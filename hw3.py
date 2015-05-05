@@ -1,5 +1,6 @@
 from __future__ import division
 __author__ = 'Jacob'
+import math
 import numpy as np
 import matplotlib.pyplot as pyplot
 
@@ -21,7 +22,7 @@ x_time = [10, 20, 30, 40, 50]
 y_number = [409, 304, 260, 192, 170]
 
 
-def values(x_vals, y_vals, x_err=[1], y_err=[1]):
+def values(x_vals, y_vals, x_err=[], y_err=[]):
     x_sq = []
     sum_y = 0
     sum_w_y = 0
@@ -35,8 +36,10 @@ def values(x_vals, y_vals, x_err=[1], y_err=[1]):
     weight = []
     sigma_A = 0
     sigm_B = 0
-    for value in y_err:
-        weight.append(1 / (value ** 2))
+    print len(y_err)
+    if len(y_err) is not 0:
+        for value in y_err:
+            weight.append(1 / (value ** 2))
 
     for index, value in enumerate(x_vals):
         sum_x += value
@@ -50,12 +53,15 @@ def values(x_vals, y_vals, x_err=[1], y_err=[1]):
         print ("Sum XY: " + str(sum_xy))
         print ("X2: " + str(value * value))
         print ("Sum X: " + str(sum_x))
-        print ("Weight: " + str(1 / ((y_err[index]) ** 2)))
-    A = ((sum_x_sqr * sum_y) - (sum_x * sum_xy)) / (num_values * sum_x_sqr - sum_x * sum_x)
-    B = ((num_values * sum_xy) - (sum_x * sum_y)) / (num_values * sum_x_sqr - sum_x * sum_x)
-    weighted_A = ((sum_x_sqr * sum_y) - (sum_x * sum_xy)) / (num_values * sum_x_sqr - sum_x * sum_x)
-    weighted_B = ((num_values * sum_xy) - (sum_x * sum_y)) / (num_values * sum_x_sqr - sum_x * sum_x)
+    delta = (num_values * sum_x_sqr - sum_x * sum_x)
+    A = ((sum_x_sqr * sum_y) - (sum_x * sum_xy)) / delta
+    B = ((num_values * sum_xy) - (sum_x * sum_y)) / delta
+    weighted_A = ((sum_x_sqr * sum_y) - (sum_x * sum_xy)) / delta
+    weighted_B = ((num_values * sum_xy) - (sum_x * sum_y)) / delta
     print [A, B]
     print [weighted_A, weighted_B]
 
 values(x_1, y_1, y_err=y_1_err)
+values(y_temperature, x_pressure)
+values(x_pressure, y_temperature)
+values(x_time, y_number)
