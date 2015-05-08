@@ -48,3 +48,32 @@ scaled_x = x_scale/0.15 #scale of pixels per millimeter
 scaled_y = y_scale/0.15 #scale of y axis pixel per millimeter
 
 # End of calibration section
+
+'''
+Converting the pixel values in data to the calibrated data
+'''
+
+data_file = 'data.txt'
+
+x_values = []
+y_values = []
+
+with open(data_file, 'r') as data:
+    data.readline()
+    for line in data:
+        line.strip()
+        col = line.split()
+        x_values.append(float(col[1]))
+        y_values.append(float(col[2]))
+
+delta_x_val = []
+delta_y_val = []
+for i in range(len(x_values)):
+    if i > 0:
+        delta_x_val.append(x_values[i] - x_values[i-1])
+        delta_y_val.append(y_values[i] - y_values[i-1])
+
+print delta_x_val
+print delta_y_val
+print np.histogram(delta_x_val)
+print np.histogram(delta_y_val)
