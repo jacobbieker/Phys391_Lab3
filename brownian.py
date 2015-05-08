@@ -66,6 +66,10 @@ with open(data_file, 'r') as data:
         x_values.append(float(col[1]))
         y_values.append(float(col[2]))
 
+cal_x_values = []
+cal_y_values = []
+
+
 delta_x_val = []
 delta_y_val = []
 for i in range(len(x_values)):
@@ -75,5 +79,4 @@ for i in range(len(x_values)):
 
 print delta_x_val
 print delta_y_val
-print np.histogram(delta_x_val)
-print np.histogram(delta_y_val)
+
