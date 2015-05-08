@@ -69,13 +69,19 @@ with open(data_file, 'r') as data:
 cal_x_values = []
 cal_y_values = []
 
+for value in x_values:
+    cal_x_values.append(value / scaled_x)
+
+for value in y_values:
+    cal_y_values.append(value / scaled_y)
+
 
 delta_x_val = []
 delta_y_val = []
 for i in range(len(x_values)):
     if i > 0:
-        delta_x_val.append(x_values[i] - x_values[i-1])
-        delta_y_val.append(y_values[i] - y_values[i-1])
+        delta_x_val.append(cal_x_values[i] - cal_x_values[i-1])
+        delta_y_val.append(cal_y_values[i] - cal_y_values[i-1])
 
 print delta_x_val
 print delta_y_val
