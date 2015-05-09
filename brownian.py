@@ -86,3 +86,8 @@ for i in range(len(x_values)):
 print delta_x_val
 print delta_y_val
 
+pyplot.hist(delta_x_val)
+pyplot.show()
+pyplot.hist(delta_y_val)
+pyplot.show()
+
