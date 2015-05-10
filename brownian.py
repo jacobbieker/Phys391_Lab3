@@ -197,7 +197,7 @@ for i in range(len(r_2)):
 
 print delta_r_2_val
 for value in delta_r_2_val:
-    mean_delta_y_2 += value
+    mean_delta_r_2 += value
 mean_delta_r_2 /= len(delta_r_2_val)
 
 standard_dev_r_2 = standard_dev(delta_r_2_val, mean_delta_r_2)
