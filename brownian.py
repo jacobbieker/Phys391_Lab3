@@ -185,5 +185,10 @@ Calculating D
 
 r_2 = []
 
-for index, value in enumerate(x_values):
-    r_2.append((value ** 2) + (y_values[index] ** 2))
+for index, value in enumerate(cal_x_values):
+    r_2.append((value ** 2) + (cal_y_values[index] ** 2))
+
+delta_r_2_val = []
+for i in range(len(r_2)):
+    if i > 0:
+        delta_r_2_val.append(delta_r_2_val[i] - delta_r_2_val[i-1])
