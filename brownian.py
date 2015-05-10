@@ -184,11 +184,22 @@ Calculating D
 '''
 
 r_2 = []
+mean_delta_r_2 = 0
 
 for index, value in enumerate(cal_x_values):
     r_2.append((value ** 2) + (cal_y_values[index] ** 2))
 
+print r_2
 delta_r_2_val = []
 for i in range(len(r_2)):
-    if i > 0:
-        delta_r_2_val.append(delta_r_2_val[i] - delta_r_2_val[i-1])
+    if i >= 1:
+        delta_r_2_val.append(r_2[i] - r_2[i-1])
+
+print delta_r_2_val
+for value in delta_r_2_val:
+    mean_delta_y_2 += value
+mean_delta_r_2 /= len(delta_r_2_val)
+
+standard_dev_r_2 = standard_dev(delta_r_2_val, mean_delta_r_2)
+
+print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2))
