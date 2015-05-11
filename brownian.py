@@ -211,7 +211,13 @@ sd_r_2_sd = standard_dev_r_2 * standard_dev_sd(len(delta_r_2_val))
 print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " SDSD: " + str(sd_r_2_sd))
 
 d_var = D(5, mean_delta_r_2)
+d_var2 = D(5, mean_delta_r_2 + standard_dev_r_2)
+d_var3 = D(5, mean_delta_r_2 - standard_dev_r_2)
 
 print d_var
 kb_constant = kB(d_var, f(.0000032), 296.25)
+kb_constant2 = kB(d_var2, f(.0000032), 296.25)
+kb_constant3 = kB(d_var3, f(.0000032), 296.25)
 print kb_constant
+print kb_constant2
+print kb_constant3
