@@ -76,8 +76,8 @@ y_scale = pythag(0, float(cal_y[1]) - float(cal_y[0]))
 print x_scale
 print y_scale
 
-scaled_x = x_scale/0.15 #scale of pixels per millimeter
-scaled_y = y_scale/0.15 #scale of y axis pixel per millimeter
+scaled_x = x_scale/0.00015 #scale of pixels per millimeter
+scaled_y = y_scale/0.00015 #scale of y axis pixel per millimeter
 
 # End of calibration section
 
