@@ -33,11 +33,11 @@ def kB(D, f, T):
 
 
 def f(R):
-    return 6 * math.pi * 1 * (10 ^ (-3)) * R
+    return 6 * math.pi * .001 * R
 
 
-def D(delta_t, avg_axis_2):
-    return avg_axis_2 / (2 * delta_t)
+def D(delta_t, avg_axis_r):
+    return avg_axis_r / (4 * delta_t)
 
 
 '''
@@ -122,9 +122,7 @@ print delta_x_val
 print delta_y_val
 
 pyplot.hist(delta_x_val)
-pyplot.show()
 pyplot.hist(delta_y_val)
-pyplot.show()
 
 
 #Mean and standard deviation for deltaX and deltaY
@@ -203,3 +201,15 @@ mean_delta_r_2 /= len(delta_r_2_val)
 standard_dev_r_2 = standard_dev(delta_r_2_val, mean_delta_r_2)
 
 print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2))
+
+d_var = D(5, mean_delta_r_2)
+
+print d_var
+y_var = mean_delta_y_2 / 10
+x_var = mean_delta_x_2 / 10
+print y_var + x_var
+z_var = y_var + x_var
+kb_constant = kB(d_var, f(.0000032), 296.25)
+print kb_constant
+kb_z = kB(z_var, f(.0000032), 296.25)
+print kb_z
