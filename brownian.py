@@ -40,6 +40,9 @@ def D(delta_t, avg_axis_r):
     return avg_axis_r / (4 * delta_t)
 
 
+def standard_dev_sd(number_of_measurements):
+    return 1 / (math.sqrt(2 * (number_of_measurements - 1)))
+
 '''
 Calibrating the Scale per pixel
 '''
@@ -76,8 +79,8 @@ y_scale = pythag(0, float(cal_y[1]) - float(cal_y[0]))
 print x_scale
 print y_scale
 
-scaled_x = x_scale/0.00015 #scale of pixels per millimeter
-scaled_y = y_scale/0.00015 #scale of y axis pixel per millimeter
+scaled_x = x_scale/0.00015 #scale of pixels per meter
+scaled_y = y_scale/0.00015 #scale of y axis pixel per meter
 
 # End of calibration section
 
@@ -170,8 +173,11 @@ mean_delta_y_2 /= len(delta_y_val)
 standard_dev_x_2 = standard_dev(delta_x_val, mean_delta_x_2)
 standard_dev_y_2 = standard_dev(delta_y_val, mean_delta_y_2)
 
-print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2))
-print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2))
+sd_y_2_sd = standard_dev_y_2 * standard_dev_sd(len(delta_y_2_val))
+sd_x_2_sd = standard_dev_x_2 * standard_dev_sd(len(delta_x_2_val))
+
+print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd))
+print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd))
 
 '''
 End Delta X, y analysis
@@ -200,16 +206,12 @@ mean_delta_r_2 /= len(delta_r_2_val)
 
 standard_dev_r_2 = standard_dev(delta_r_2_val, mean_delta_r_2)
 
-print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2))
+sd_r_2_sd = standard_dev_r_2 * standard_dev_sd(len(delta_r_2_val))
+
+print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " SDSD: " + str(sd_r_2_sd))
 
 d_var = D(5, mean_delta_r_2)
 
 print d_var
-y_var = mean_delta_y_2 / 10
-x_var = mean_delta_x_2 / 10
-print y_var + x_var
-z_var = y_var + x_var
 kb_constant = kB(d_var, f(.0000032), 296.25)
 print kb_constant
-kb_z = kB(z_var, f(.0000032), 296.25)
-print kb_z
