@@ -143,8 +143,12 @@ mean_delta_y /= len(delta_y_val)
 standard_dev_x = standard_dev(delta_x_val, mean_delta_x)
 standard_dev_y = standard_dev(delta_y_val, mean_delta_y)
 
-print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x))
-print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y))
+
+sd_x_sd = standard_dev_x * standard_dev_sd(len(delta_x_val))
+sd_y_sd = standard_dev_y * standard_dev_sd(len(delta_y_val))
+
+print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDSD: " + str(sd_x_sd))
+print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDSD: " + str(sd_y_sd))
 
 #End Standard deviation and mean for deltaX and deltaY
 
@@ -175,6 +179,9 @@ standard_dev_y_2 = standard_dev(delta_y_val, mean_delta_y_2)
 
 sd_y_2_sd = standard_dev_y_2 * standard_dev_sd(len(delta_y_2_val))
 sd_x_2_sd = standard_dev_x_2 * standard_dev_sd(len(delta_x_2_val))
+
+sdsd_x2_from_x = standard_dev_x * 2
+sdsd_y2_from_y = standard_dev_y * 2
 
 print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd))
 print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd))
@@ -213,6 +220,11 @@ print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " 
 d_var = D(5, mean_delta_r_2)
 d_var2 = D(5, mean_delta_r_2 + standard_dev_r_2)
 d_var3 = D(5, mean_delta_r_2 - standard_dev_r_2)
+
+error_in_r_2 = sd_x_2_sd + sd_y_2_sd
+print quad_error(sd_x_2_sd, sd_y_2_sd)
+print error_in_r_2
+print sd_r_2_sd
 
 print d_var
 kb_constant = kB(d_var, f(.0000032), 296.25)
