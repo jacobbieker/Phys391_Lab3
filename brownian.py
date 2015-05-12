@@ -7,6 +7,12 @@ import math
 bead_size = 3.2 #um
 temp = 23.1 #C
 
+# ERROR: size of one microbead for each calibration one diameter for the
+#delta R^2 graph is sigma squared vs D deltaT
+#Find error of slope
+#Error for measured quantities in everything
+#Actually estimate the error in calibration: a couple pixels from each edge, ie 3 or 4 pixels total and one microbead diameter 3.2 um for each X and Y
+
 '''
 Basic functions to call later
 '''
@@ -737,6 +743,7 @@ standard_dev_y = standard_dev(delta_y_val, mean_delta_y)
 
 sd_x_sd = standard_dev_x * standard_dev_sd(len(delta_x_val))
 sd_y_sd = standard_dev_y * standard_dev_sd(len(delta_y_val))
+
 
 print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDSD: " + str(sd_x_sd))
 print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDSD: " + str(sd_y_sd))
