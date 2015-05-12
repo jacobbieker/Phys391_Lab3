@@ -183,8 +183,8 @@ sd_x_2_sd = standard_dev_x_2 * standard_dev_sd(len(delta_x_2_val))
 sdsd_x2_from_x = standard_dev_x * 2
 sdsd_y2_from_y = standard_dev_y * 2
 
-print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd))
-print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd))
+print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd) + " SDX: " + str(sdsd_x2_from_x))
+print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd) + " SDY: " + str(sdsd_y2_from_y))
 
 '''
 End Delta X, y analysis
@@ -222,6 +222,7 @@ d_var2 = D(5, mean_delta_r_2 + standard_dev_r_2)
 d_var3 = D(5, mean_delta_r_2 - standard_dev_r_2)
 
 error_in_r_2 = sd_x_2_sd + sd_y_2_sd
+error_in_r_2_from_xy = quad_error(sdsd_y2_from_y, sdsd_x2_from_x)
 print quad_error(sd_x_2_sd, sd_y_2_sd)
 print error_in_r_2
 print sd_r_2_sd
