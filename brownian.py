@@ -90,146 +90,154 @@ Converting the pixel values in data to the calibrated data
 
 data_file = 'data.txt'
 
-'''
-Data analysis for Delta x, y
-'''
-x_values = []
-y_values = []
 
-with open(data_file, 'r') as data:
-    data.readline()
-    for line in data:
-        line.strip()
-        col = line.split()
-        x_values.append(float(col[1]))
-        y_values.append(float(col[2]))
+def boltzmann_constant(time_step):
+    '''
+    Data analysis for Delta x, y
+    '''
+    x_values = []
+    y_values = []
 
-cal_x_values = []
-cal_y_values = []
+    with open(data_file, 'r') as data:
+        data.readline()
+        for line in data:
+            line.strip()
+            col = line.split()
+            x_values.append(float(col[1]))
+            y_values.append(float(col[2]))
 
-for value in x_values:
-    cal_x_values.append(value / scaled_x)
+    cal_x_values = []
+    cal_y_values = []
 
-for value in y_values:
-    cal_y_values.append(value / scaled_y)
+    for value in x_values:
+        cal_x_values.append(value / scaled_x)
 
-
-delta_x_val = []
-delta_y_val = []
-for i in range(len(x_values)):
-    if i > 0:
-        delta_x_val.append(cal_x_values[i] - cal_x_values[i-1])
-        delta_y_val.append(cal_y_values[i] - cal_y_values[i-1])
-
-print delta_x_val
-print delta_y_val
-
-pyplot.hist(delta_x_val)
-pyplot.hist(delta_y_val)
+    for value in y_values:
+        cal_y_values.append(value / scaled_y)
 
 
-#Mean and standard deviation for deltaX and deltaY
-mean_delta_x = 0
-mean_delta_y = 0
+    delta_x_val = []
+    delta_y_val = []
+    for i in range(len(x_values)):
+        if i > (time_step / 5) - 1:
+            delta_x_val.append(cal_x_values[i] - cal_x_values[i-int((time_step / 5))])
+            delta_y_val.append(cal_y_values[i] - cal_y_values[i-int((time_step / 5))])
 
-for value in delta_x_val:
-    mean_delta_x += value
-mean_delta_x /= len(delta_x_val)
+    print delta_x_val
+    print delta_y_val
 
-for value in delta_y_val:
-    mean_delta_y += value
-mean_delta_y /= len(delta_y_val)
-
-standard_dev_x = standard_dev(delta_x_val, mean_delta_x)
-standard_dev_y = standard_dev(delta_y_val, mean_delta_y)
+    pyplot.hist(delta_x_val)
+    pyplot.hist(delta_y_val)
 
 
-sd_x_sd = standard_dev_x * standard_dev_sd(len(delta_x_val))
-sd_y_sd = standard_dev_y * standard_dev_sd(len(delta_y_val))
+    #Mean and standard deviation for deltaX and deltaY
+    mean_delta_x = 0
+    mean_delta_y = 0
 
-print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDSD: " + str(sd_x_sd))
-print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDSD: " + str(sd_y_sd))
+    for value in delta_x_val:
+        mean_delta_x += value
+    mean_delta_x /= len(delta_x_val)
 
-#End Standard deviation and mean for deltaX and deltaY
+    for value in delta_y_val:
+        mean_delta_y += value
+    mean_delta_y /= len(delta_y_val)
 
-#Mean and standard deviation for deltaX^@ and deltaY^2
-mean_delta_x_2 = 0
-mean_delta_y_2 = 0
-
-delta_x_2_val = []
-delta_y_2_val = []
-
-for value in delta_x_val:
-    delta_x_2_val.append((value ** 2))
-
-for value in delta_y_val:
-    delta_y_2_val.append((value ** 2))
+    standard_dev_x = standard_dev(delta_x_val, mean_delta_x)
+    standard_dev_y = standard_dev(delta_y_val, mean_delta_y)
 
 
-for value in delta_x_2_val:
-    mean_delta_x_2 += value
-mean_delta_x_2 /= len(delta_x_val)
+    sd_x_sd = standard_dev_x * standard_dev_sd(len(delta_x_val))
+    sd_y_sd = standard_dev_y * standard_dev_sd(len(delta_y_val))
 
-for value in delta_y_2_val:
-    mean_delta_y_2 += value
-mean_delta_y_2 /= len(delta_y_val)
+    print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDSD: " + str(sd_x_sd))
+    print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDSD: " + str(sd_y_sd))
 
-standard_dev_x_2 = standard_dev(delta_x_val, mean_delta_x_2)
-standard_dev_y_2 = standard_dev(delta_y_val, mean_delta_y_2)
+    #End Standard deviation and mean for deltaX and deltaY
 
-sd_y_2_sd = standard_dev_y_2 * standard_dev_sd(len(delta_y_2_val))
-sd_x_2_sd = standard_dev_x_2 * standard_dev_sd(len(delta_x_2_val))
+    #Mean and standard deviation for deltaX^@ and deltaY^2
+    mean_delta_x_2 = 0
+    mean_delta_y_2 = 0
 
-sdsd_x2_from_x = standard_dev_x * 2
-sdsd_y2_from_y = standard_dev_y * 2
+    delta_x_2_val = []
+    delta_y_2_val = []
 
-print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd))
-print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd))
+    for value in delta_x_val:
+        delta_x_2_val.append((value ** 2))
 
-'''
-End Delta X, y analysis
-'''
+    for value in delta_y_val:
+        delta_y_2_val.append((value ** 2))
 
-'''
-Calculating D
-'''
 
-r_2 = []
-mean_delta_r_2 = 0
+    for value in delta_x_2_val:
+        mean_delta_x_2 += value
+    mean_delta_x_2 /= len(delta_x_val)
 
-for index, value in enumerate(cal_x_values):
-    r_2.append(math.sqrt((value ** 2) + (cal_y_values[index] ** 2)))
+    for value in delta_y_2_val:
+        mean_delta_y_2 += value
+    mean_delta_y_2 /= len(delta_y_val)
 
-print r_2
-delta_r_2_val = []
-for i in range(len(r_2)):
-    if i > 0:
-        delta_r_2_val.append((r_2[i] - r_2[i-1]) ** 2)
+    standard_dev_x_2 = standard_dev(delta_x_2_val, mean_delta_x_2)
+    standard_dev_y_2 = standard_dev(delta_y_2_val, mean_delta_y_2)
 
-print delta_r_2_val
-for value in delta_r_2_val:
-    mean_delta_r_2 += value
-mean_delta_r_2 /= len(delta_r_2_val)
+    sd_y_2_sd = standard_dev_y_2 * standard_dev_sd(len(delta_y_2_val))
+    sd_x_2_sd = standard_dev_x_2 * standard_dev_sd(len(delta_x_2_val))
 
-standard_dev_r_2 = standard_dev(delta_r_2_val, mean_delta_r_2)
+    sdsd_x2_from_x = (standard_dev_x / mean_delta_x) * 2
+    sdsd_y2_from_y = (standard_dev_y / mean_delta_y) * 2
 
-sd_r_2_sd = standard_dev_r_2 * standard_dev_sd(len(delta_r_2_val))
+    print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd))
+    print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd))
 
-print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " SDSD: " + str(sd_r_2_sd))
+    '''
+    End Delta X, y analysis
+    '''
 
-d_var = D(5, mean_delta_r_2)
-d_var2 = D(5, mean_delta_r_2 + standard_dev_r_2)
-d_var3 = D(5, mean_delta_r_2 - standard_dev_r_2)
+    '''
+    Calculating D
+    '''
 
-error_in_r_2 = sd_x_2_sd + sd_y_2_sd
-print quad_error(sd_x_2_sd, sd_y_2_sd)
-print error_in_r_2
-print sd_r_2_sd
+    r_2 = []
+    mean_delta_r_2 = 0
 
-print d_var
-kb_constant = kB(d_var, f(.0000032), 296.25)
-kb_constant2 = kB(d_var2, f(.0000032), 296.25)
-kb_constant3 = kB(d_var3, f(.0000032), 296.25)
-print kb_constant
-print kb_constant2
-print kb_constant3
+    for index, value in enumerate(cal_x_values):
+        r_2.append(math.sqrt((value ** 2) + (cal_y_values[index] ** 2)))
+
+    print r_2
+    delta_r_2_val = []
+    for i in range(len(r_2)):
+        if i > (time_step / 5) - 1:
+            delta_r_2_val.append((r_2[i] - r_2[i-int((time_step / 5))] ** 2))
+
+    print delta_r_2_val
+    for value in delta_r_2_val:
+        mean_delta_r_2 += value
+    mean_delta_r_2 /= len(delta_r_2_val)
+
+    standard_dev_r_2 = standard_dev(delta_r_2_val, mean_delta_r_2)
+
+    sd_r_2_sd = standard_dev_r_2 * standard_dev_sd(len(delta_r_2_val))
+
+    print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " SDSD: " + str(sd_r_2_sd))
+
+    d_var = D(time_step, mean_delta_r_2)
+    d_var2 = D(time_step, mean_delta_r_2 + standard_dev_r_2)
+    d_var3 = D(time_step, mean_delta_r_2 - standard_dev_r_2)
+
+    error_in_r_2 = sd_x_2_sd + sd_y_2_sd
+    print quad_error(sd_x_2_sd, sd_y_2_sd)
+    print error_in_r_2
+    print sd_r_2_sd
+
+    print d_var
+    kb_constant = kB(d_var, f(.0000032), 296.25)
+    kb_constant2 = kB(d_var2, f(.0000032), 296.25)
+    kb_constant3 = kB(d_var3, f(.0000032), 296.25)
+    print kb_constant
+    print kb_constant2
+    print kb_constant3
+
+boltzmann_constant(5)
+boltzmann_constant(10)
+boltzmann_constant(15)
+boltzmann_constant(20)
+boltzmann_constant(25)
