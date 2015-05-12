@@ -18,6 +18,10 @@ Basic functions to call later
 '''
 
 
+def frac_error(error, true_value):
+    return error / abs(true_value)
+
+
 def quad_error(b_error, v_error):
     return math.sqrt((b_error ** 2) + (v_error ** 2))
 
