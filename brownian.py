@@ -6,13 +6,15 @@ import math
 
 bead_size = 3.2 #um
 temp = 23.1 #C
-
-# ERROR: size of one microbead for each calibration one diameter for the
+time_array = []
+TwoDdeltaT_array = []
+d_var_array = []
+#ERROR: size of one microbead for each calibration one diameter for the
 #delta R^2 graph is sigma squared vs D deltaT
 #Find error of slope
 #Error for measured quantities in everything
 #Actually estimate the error in calibration: a couple pixels from each edge, ie 3 or 4 pixels total and one microbead diameter 3.2 um for each X and Y
-
+#Plotting 2DDeltaT in graph, because that equals 2 sigma
 '''
 Basic functions to call later
 '''
@@ -20,6 +22,7 @@ Basic functions to call later
 
 def power_error(power, frac_uncertainty):
     return power * frac_uncertainty
+
 
 def frac_error(error, true_value):
     return error / abs(true_value)
@@ -95,8 +98,8 @@ print y_scale
 scaled_x = x_scale/0.00015 #scale of pixels per meter
 scaled_y = y_scale/0.00015 #scale of y axis pixel per meter
 
-error_in_x = x_scale / scaled_x * 4 #Finds the distance of 4 pixels in the X direction, the estimated error in X calibration
-error_in_y = y_scale / scaled_y * 4 #Finds the distance of 4 pixels in the Y direction, the estimated error in Y calibration
+error_in_x = (1 / scaled_x) * 4 #Finds the distance of 4 pixels in the X direction, the estimated error in X calibration
+error_in_y = (1 / scaled_y) * 4 #Finds the distance of 4 pixels in the Y direction, the estimated error in Y calibration
 
 print ("Error in X Cal: " + str(error_in_x))
 print ("Error in Y Cal: " + str(error_in_y))
@@ -148,9 +151,10 @@ def boltzmann_constant(time_step):
 
     pyplot.hist(delta_x_val)
     pyplot.savefig("Histogram_delta_x_" + str(time_step) + ".png")
+    pyplot.show()
     pyplot.hist(delta_y_val)
     pyplot.savefig("Histogram_delta_y_" + str(time_step) + ".png")
-
+    pyplot.show()
 
     #Mean and standard deviation for deltaX and deltaY
     mean_delta_x = 0
@@ -167,7 +171,7 @@ def boltzmann_constant(time_step):
     standard_dev_x = standard_dev(delta_x_val, mean_delta_x)
     standard_dev_y = standard_dev(delta_y_val, mean_delta_y)
 
-    #Error in delta_x, delta_y fro mquadrature addition
+    #Error in delta_x, delta_y from quadrature addition
     error_in_delta_x = quad_error(error_in_x, error_in_x)
     error_in_delta_y = quad_error(error_in_y, error_in_y)
 
@@ -249,7 +253,7 @@ def boltzmann_constant(time_step):
     print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " SDSD: " + str(sd_r_2_sd))
 
     d_var10 = D(time_step, mean_delta_r_2)
-    d_var11 = D(time_step, mean_delta_r_2 + standard_dev_r_2)
+    d_var11 = D(time_step, mean_delta_r_2 + standard_dev_r_2) #Check to see if actual value in one standard deviation
     d_var9 = D(time_step, mean_delta_r_2 - standard_dev_r_2)
 
     error_in_r_2 = sd_x_2_sd + sd_y_2_sd
@@ -263,9 +267,29 @@ def boltzmann_constant(time_step):
     print kb_constant
     print kb_constant2
     print kb_constant3
+    print ("D: " + str(d_var10))
+    time_array.append(int(time_step))
+    TwoDDeltaT = 2 * d_var10 * time_step
+    TwoDdeltaT_array.append(TwoDDeltaT)
+    d_var_array.append(d_var10)
+
 
 boltzmann_constant(5)
+print TwoDdeltaT_array
 boltzmann_constant(10)
+print TwoDdeltaT_array
 boltzmann_constant(15)
+print TwoDdeltaT_array
 boltzmann_constant(20)
+print TwoDdeltaT_array
 boltzmann_constant(25)
+
+print TwoDdeltaT_array
+print time_array
+pyplot.scatter(TwoDdeltaT_array, time_array)
+pyplot.savefig("Sigma_Squared.png")
+pyplot.show()
+
+pyplot.scatter(time_array, d_var_array)
+pyplot.savefig("D_graph.png")
+pyplot.show()
