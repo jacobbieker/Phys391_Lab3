@@ -15,6 +15,8 @@ d_var_array = []
 #Error for measured quantities in everything
 #Actually estimate the error in calibration: a couple pixels from each edge, ie 3 or 4 pixels total and one microbead diameter 3.2 um for each X and Y
 #Plotting 2DDeltaT in graph, because that equals 2 sigma
+#Delta_r_2 - (Delta_r)^2 is not the same as before, since Delta_r is always positive
+#Error found through SDOM except for DeltaK
 '''
 Basic functions to call later
 '''
@@ -178,8 +180,8 @@ def boltzmann_constant(time_step):
     sd_x_sd = standard_dev_x * standard_dev_sd(len(delta_x_val))
     sd_y_sd = standard_dev_y * standard_dev_sd(len(delta_y_val))
 
-    print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDSD: " + str(sd_x_sd) + " Error: " + str(error_in_delta_x))
-    print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDSD: " + str(sd_y_sd) + " Error: " + str(error_in_delta_y))
+    print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDOM: " + str(sd_x_sd))
+    print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDOM: " + str(sd_y_sd))
 
     #End Standard deviation and mean for deltaX and deltaY
 
@@ -218,8 +220,8 @@ def boltzmann_constant(time_step):
     error_in_delta_x_2 = power_error(2, frac_error(error_in_delta_x, mean_delta_x))
     error_in_delta_y_2 = power_error(2, frac_error(error_in_delta_y, mean_delta_y))
 
-    print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd) + " Error: " + str(error_in_delta_x_2))
-    print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd) + " Error: " + str(error_in_delta_y_2))
+    print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDOM: " + str(sd_x_2_sd))
+    print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDOM: " + str(sd_y_2_sd))
 
     '''
     End Delta X, y analysis
