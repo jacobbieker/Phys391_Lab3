@@ -147,7 +147,9 @@ def boltzmann_constant(time_step):
     print delta_y_val
 
     pyplot.hist(delta_x_val)
+    pyplot.savefig("Histogram_delta_x_" + str(time_step) + ".png")
     pyplot.hist(delta_y_val)
+    pyplot.savefig("Histogram_delta_y_" + str(time_step) + ".png")
 
 
     #Mean and standard deviation for deltaX and deltaY
@@ -165,12 +167,15 @@ def boltzmann_constant(time_step):
     standard_dev_x = standard_dev(delta_x_val, mean_delta_x)
     standard_dev_y = standard_dev(delta_y_val, mean_delta_y)
 
+    #Error in delta_x, delta_y fro mquadrature addition
+    error_in_delta_x = quad_error(error_in_x, error_in_x)
+    error_in_delta_y = quad_error(error_in_y, error_in_y)
 
     sd_x_sd = standard_dev_x * standard_dev_sd(len(delta_x_val))
     sd_y_sd = standard_dev_y * standard_dev_sd(len(delta_y_val))
 
-    print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDSD: " + str(sd_x_sd))
-    print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDSD: " + str(sd_y_sd))
+    print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDSD: " + str(sd_x_sd) + " Error: " + str(error_in_delta_x))
+    print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDSD: " + str(sd_y_sd) + " Error: " + str(error_in_delta_y))
 
     #End Standard deviation and mean for deltaX and deltaY
 
@@ -205,8 +210,12 @@ def boltzmann_constant(time_step):
     sdsd_x2_from_x = (standard_dev_x / mean_delta_x) * 2
     sdsd_y2_from_y = (standard_dev_y / mean_delta_y) * 2
 
-    print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd))
-    print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd))
+    #Error in delta_X^2 and delta_Y^2
+    error_in_delta_x_2 = power_error(2, frac_error(error_in_delta_x, mean_delta_x))
+    error_in_delta_y_2 = power_error(2, frac_error(error_in_delta_y, mean_delta_y))
+
+    print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDSD: " + str(sd_x_2_sd) + " Error: " + str(error_in_delta_x_2))
+    print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDSD: " + str(sd_y_2_sd) + " Error: " + str(error_in_delta_y_2))
 
     '''
     End Delta X, y analysis
