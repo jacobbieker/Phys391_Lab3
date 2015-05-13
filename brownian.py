@@ -252,7 +252,7 @@ def boltzmann_constant(time_step):
 
     sd_r_2_sd = standard_dev_r_2 * standard_dev_sd(len(delta_r_2_val))
 
-    print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " SDSD: " + str(sd_r_2_sd))
+    print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " SDOM: " + str(sd_r_2_sd))
 
     d_var10 = D(time_step, mean_delta_r_2)
     d_var11 = D(time_step, mean_delta_r_2 + standard_dev_r_2) #Check to see if actual value in one standard deviation
