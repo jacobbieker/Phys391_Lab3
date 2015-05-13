@@ -286,7 +286,7 @@ boltzmann_constant(25)
 
 print TwoDdeltaT_array
 print time_array
-pyplot.scatter(TwoDdeltaT_array, time_array)
+pyplot.errorbar(TwoDdeltaT_array, time_array, linestyle='None')
 pyplot.savefig("Sigma_Squared.png")
 pyplot.show()
 
