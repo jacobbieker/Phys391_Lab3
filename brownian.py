@@ -290,6 +290,8 @@ pyplot.scatter(TwoDdeltaT_array, time_array)
 pyplot.savefig("Sigma_Squared.png")
 pyplot.show()
 
+print d_var_array
 pyplot.scatter(time_array, d_var_array)
+pyplot.ylim(-.0000000000005, .0000000000005)
 pyplot.savefig("D_graph.png")
 pyplot.show()
