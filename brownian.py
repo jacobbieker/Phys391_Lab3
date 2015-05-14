@@ -289,8 +289,8 @@ def boltzmann_constant(time_step):
     d_var_array.append(d_var10)
     print (math.erf(mean_delta_x))
     print (math.erf(mean_delta_y))
-    print ("K " + str(kb_constant) + " KB Error: " + str((error_in_r_2 / (4 * int(time_step))) * (f(.0000016) / 296.25)))
-    percent_correct = (kb_constant - (1.38e-13))/ (error_in_r_2 / (4 * int(time_step))) * (f(.0000016) / 296.25)
+    print ("K " + str(kb_constant) + " KB Error: " + str((error_in_r_2 / (4 * int(time_step))) * (f(.0000016) / 296.25)) + "From Wolfram: " + str(kb_constant * 0.18146958422))
+    percent_correct = abs(kb_constant - (1.38e-13))/ (error_in_r_2 / (4 * int(time_step))) * (f(.0000016) / 296.25)
     print ("Prob K within K: " + str(percent_correct) + " " + str(math.erf(percent_correct)))
     print str(((1- math.erf(percent_correct)) / 2))
 
