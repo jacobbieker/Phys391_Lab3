@@ -263,9 +263,9 @@ def boltzmann_constant(time_step):
     print error_in_r_2
     print sd_r_2_sd
 
-    kb_constant = kB(d_var10, f(.0000032), 296.25)
-    kb_constant2 = kB(d_var11, f(.0000032), 296.25)
-    kb_constant3 = kB(d_var9, f(.0000032), 296.25)
+    kb_constant = kB(d_var10, f(.0000016), 296.25)
+    kb_constant2 = kB(d_var11, f(.0000016), 296.25)
+    kb_constant3 = kB(d_var9, f(.0000016), 296.25)
     print kb_constant
     print kb_constant2
     print kb_constant3
