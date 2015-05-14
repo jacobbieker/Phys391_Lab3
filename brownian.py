@@ -269,16 +269,14 @@ def boltzmann_constant(time_step):
 
     error_in_r_2 = sd_x_2_sd + sd_y_2_sd
     delta_delta_r = math.sqrt((mean_delta_x_2 ** 2) + (mean_delta_y_2 ** 2))
-    delta_delta_r_2 = delta_delta_r ** 2
     print ("Delta Delta R: " + str(delta_delta_r))
-    print ("Delta Delta R2: " + str(delta_delta_r_2))
-
+    print error_in_r_2
     delta_r_2_array.append(delta_delta_r)
     delta_r_2_error_array.append(error_in_r_2)
 
-    d_var10 = D(time_step, delta_delta_r)
-    d_var11 = D(time_step, delta_delta_r + standard_dev_r_2) #Check to see if actual value in one standard deviation
-    d_var9 = D(time_step, delta_delta_r - standard_dev_r_2)
+    d_var10 = D(time_step, mean_delta_r_2)
+    d_var11 = D(time_step, mean_delta_r_2 + standard_dev_r_2) #Check to see if actual value in one standard deviation
+    d_var9 = D(time_step, mean_delta_r_2 - standard_dev_r_2)
 
     kb_constant = kB(d_var10, f(.0000016), 296.25)
     kb_constant2 = kB(d_var11, f(.0000016), 296.25)
@@ -291,6 +289,9 @@ def boltzmann_constant(time_step):
     d_var_array.append(d_var10)
     print (math.erf(mean_delta_x))
     print (math.erf(mean_delta_y))
+    print ("K " + str(kb_constant) + " KB Error: " + str((error_in_r_2 / (4 * int(time_step))) * (f(.0000016) / 296.25)))
+    percent_correct = (kb_constant - (1.38e-13))/ (error_in_r_2 / (4 * int(time_step))) * (f(.0000016) / 296.25)
+    print ("Prob K within K: " + str(percent_correct) + " " + str(math.erf(percent_correct)))
 
 
 boltzmann_constant(5)
