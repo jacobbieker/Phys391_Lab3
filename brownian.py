@@ -48,6 +48,13 @@ def standard_dev(set_of_values, avg_value):
     return std_dev
 
 
+def correlation(setX_of_values, setY_of_values, x_avg, y_avg, x_err, y_err):
+    sum_of_points = 0
+    for index, value in enumerate(setX_of_values):
+        point = (((value - x_avg) / x_err) * ((setY_of_values[index] - y_avg) / y_err))
+        sum_of_points += point
+    return (1 / (len(setX_of_values) - 1)) * sum_of_points
+
 def kB(D, f, T):
     return (D * f) / T
 
@@ -186,8 +193,8 @@ def boltzmann_constant(time_step):
     sd_x_sd = standard_dev_x * standard_dev_sd(len(delta_x_val))
     sd_y_sd = standard_dev_y * standard_dev_sd(len(delta_y_val))
 
-    print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDOM: " + str(sd_x_sd))
-    print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDOM: " + str(sd_y_sd))
+    print ("Mean X: " + str(mean_delta_x) + " SD: " + str(standard_dev_x) + " SDOM: " + str(standard_dev_sd(len(delta_x_val))))
+    print ("Mean Y: " + str(mean_delta_y) + " SD: " + str(standard_dev_y) + " SDOM: " + str(standard_dev_sd(len(delta_y_val))))
 
     #End Standard deviation and mean for deltaX and deltaY
 
@@ -226,8 +233,8 @@ def boltzmann_constant(time_step):
     error_in_delta_x_2 = power_error(2, frac_error(error_in_delta_x, mean_delta_x))
     error_in_delta_y_2 = power_error(2, frac_error(error_in_delta_y, mean_delta_y))
 
-    print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDOM: " + str(sd_x_2_sd))
-    print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDOM: " + str(sd_y_2_sd))
+    print ("Mean X^2: " + str(mean_delta_x_2) + " SD: " + str(standard_dev_x_2) + " SDOM: " + str(standard_dev_sd(len(delta_x_2_val))))
+    print ("Mean Y^2: " + str(mean_delta_y_2) + " SD: " + str(standard_dev_y_2) + " SDOM: " + str(standard_dev_sd(len(delta_y_2_val))))
 
     '''
     End Delta X, y analysis
@@ -279,11 +286,11 @@ def boltzmann_constant(time_step):
     print kb_constant
     print kb_constant2
     print kb_constant3
-    print ("D: " + str(d_var10))
+    print ("D: " + str(d_var10) + " D-Error: " + str(error_in_r_2 / (4 * int(time_step))) + " D-Frac: " + str((error_in_r_2 / (4 * int(time_step))) / d_var10))
     time_array.append(int(time_step))
-    TwoDDeltaT = 2 * d_var10 * time_step
-    TwoDdeltaT_array.append(TwoDDeltaT)
     d_var_array.append(d_var10)
+    print (math.erf(mean_delta_x))
+    print (math.erf(mean_delta_y))
 
 
 boltzmann_constant(5)
@@ -292,9 +299,6 @@ boltzmann_constant(15)
 boltzmann_constant(20)
 boltzmann_constant(25)
 
-coeff = np.polyfit(time_array, delta_r_2_array, 1)
-print coeff
-print time_array
 pyplot.errorbar(time_array, delta_r_2_array, yerr=delta_r_2_error_array)
 pyplot.xlim(0, 30)
 pyplot.savefig("R_Squared.png")
