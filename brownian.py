@@ -9,6 +9,8 @@ temp = 23.1 #C
 time_array = []
 TwoDdeltaT_array = []
 d_var_array = []
+delta_r_2_array = []
+delta_r_2_error_array = []
 #ERROR: size of one microbead for each calibration one diameter for the
 #delta R^2 graph is sigma squared vs D deltaT
 #Find error of slope
@@ -152,11 +154,15 @@ def boltzmann_constant(time_step):
     print delta_y_val
 
     pyplot.hist(delta_x_val)
+    pyplot.title("X Coordinate Graph From A " + str(time_step) + " Second Time Step")
     pyplot.savefig("Histogram_delta_x_" + str(time_step) + ".png")
     pyplot.show()
+    pyplot.close()
     pyplot.hist(delta_y_val)
+    pyplot.title("Y Coordinate Graph From A " + str(time_step) + " Second Time Step")
     pyplot.savefig("Histogram_delta_y_" + str(time_step) + ".png")
     pyplot.show()
+    pyplot.close()
 
     #Mean and standard deviation for deltaX and deltaY
     mean_delta_x = 0
@@ -254,14 +260,18 @@ def boltzmann_constant(time_step):
 
     print ("Mean R^2: " + str(mean_delta_r_2) + " SD: " + str(standard_dev_r_2) + " SDOM: " + str(sd_r_2_sd))
 
-    d_var10 = D(time_step, mean_delta_r_2)
-    d_var11 = D(time_step, mean_delta_r_2 + standard_dev_r_2) #Check to see if actual value in one standard deviation
-    d_var9 = D(time_step, mean_delta_r_2 - standard_dev_r_2)
-
     error_in_r_2 = sd_x_2_sd + sd_y_2_sd
-    print quad_error(sd_x_2_sd, sd_y_2_sd)
-    print error_in_r_2
-    print sd_r_2_sd
+    delta_delta_r = math.sqrt((mean_delta_x_2 ** 2) + (mean_delta_y_2 ** 2))
+    delta_delta_r_2 = delta_delta_r ** 2
+    print ("Delta Delta R: " + str(delta_delta_r))
+    print ("Delta Delta R2: " + str(delta_delta_r_2))
+
+    delta_r_2_array.append(delta_delta_r)
+    delta_r_2_error_array.append(error_in_r_2)
+
+    d_var10 = D(time_step, delta_delta_r)
+    d_var11 = D(time_step, delta_delta_r + standard_dev_r_2) #Check to see if actual value in one standard deviation
+    d_var9 = D(time_step, delta_delta_r - standard_dev_r_2)
 
     kb_constant = kB(d_var10, f(.0000016), 296.25)
     kb_constant2 = kB(d_var11, f(.0000016), 296.25)
@@ -277,23 +287,18 @@ def boltzmann_constant(time_step):
 
 
 boltzmann_constant(5)
-print TwoDdeltaT_array
 boltzmann_constant(10)
-print TwoDdeltaT_array
 boltzmann_constant(15)
-print TwoDdeltaT_array
 boltzmann_constant(20)
-print TwoDdeltaT_array
 boltzmann_constant(25)
 
-print TwoDdeltaT_array
+coeff = np.polyfit(time_array, delta_r_2_array, 1)
+print coeff
 print time_array
-pyplot.errorbar(TwoDdeltaT_array, time_array, linestyle='None')
-pyplot.savefig("Sigma_Squared.png")
+pyplot.errorbar(time_array, delta_r_2_array, yerr=delta_r_2_error_array)
+pyplot.xlim(0, 30)
+pyplot.savefig("R_Squared.png")
 pyplot.show()
 
-print d_var_array
-pyplot.scatter(time_array, d_var_array)
-pyplot.ylim(-.0000000000005, .0000000000005)
-pyplot.savefig("D_graph.png")
-pyplot.show()
+print delta_r_2_array
+print delta_r_2_error_array
